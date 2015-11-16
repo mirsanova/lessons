@@ -64,7 +64,7 @@ class Train
 
   def add_wagon(wagon)
     if wagon.wagon_type == train_type 
-      if !train.moving?
+      if !train_moving?
         @wagons[wagon.number] = wagon
         puts "Вагон добавлен"
       else
@@ -79,7 +79,7 @@ class Train
 
   def remove_wagon(wagon)
     if wagon.wagon_type == train_type 
-     if !train.moving?
+     if !train_moving?
       @wagons.delete(wagon.number)
       puts "Вагон удален"
      else
