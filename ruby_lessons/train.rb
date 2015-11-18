@@ -1,12 +1,24 @@
+require_relative 'manufacturer'
 class Train
+  include Manufacturer
   attr_accessor :speed, :number
   
+  @@trains = Hash.new
+
+
   def initialize(number)
     @number = number
     @wagons = Hash.new
     @speed = 0
     @cur_index_station = 0
+    @@trains[number] = self
+
   end
+
+  def self.find(number)
+    puts "Find"
+    @@trains[number]
+  end  
 
   def next_station
     @next_station
@@ -37,24 +49,24 @@ class Train
   end
 
   def route=(route)
-    @route = route
+    @routes = route
   end  
 
   def next_station
-    if @route.size == 0
+    if @routes.size == 0
       puts "Не задан маршрут"
     else
       increase_index_station
-      next_station = @route[cur_index_station]
+      @next_station = @routes[cur_index_station]
       puts "Следущая стнция #{@next_station.name}"
     end
   end
 
   def show_station
-    if @route.length == 0
+    if @routes.size == 0
       puts "Не задан маршрут"
     else
-      puts "Текущая станция #{@route[@cur_index_station].name}"
+      puts "Текущая станция #{@routes[@cur_index_station].name}"
     end    
   end
 
