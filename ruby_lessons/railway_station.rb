@@ -3,15 +3,12 @@ class RailwayStation
    @@all = []  
 
   def initialize(station_number,name)
-    begin
       @station_number = station_number
       @name = name
       @trains = []
       validate!
       @@all << self
-    rescue RuntimeError => e 
-      puts "#{e.message}"
-    end
+    
   end
 
   def self.all
