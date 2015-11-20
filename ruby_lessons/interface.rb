@@ -35,13 +35,17 @@ class Interface
 	private
 
 	def create_station
-		print "Введите номер станции:"
-		station_number = gets.chomp
-		puts station_number
-		print "Введите название станции:"
-		station = gets.chomp
-		puts station
-		@stations[station_number] =  RailwayStation.new(station_number,station)		
+		begin
+			print "Введите номер станции:"
+			station_number = gets.chomp
+			puts station_number
+			print "Введите название станции:"
+			station = gets.chomp
+			puts station
+			@stations[station_number] =  RailwayStation.new(station_number,station)
+		rescue StandardError => e
+			puts "#{e.message}"
+		end		
 	end
 
 	def create_train
@@ -50,13 +54,17 @@ class Interface
 		puts "Укажите тип поезда: 1-пассажирский, 2-грузовой"
 		train_var = gets.chomp.to_i
 
-		if train_var == 1
-			@trains[train_number] = PassangerTrain.new(train_number)
+		begin
+			if train_var == 1
+				@trains[train_number] = PassangerTrain.new(train_number)
 
-		elsif train_var == 2
-			@trains[train_number] = CargoTrain.new(train_number)
-		else
-			puts "Неправильно введен номер"
+			elsif train_var == 2
+				@trains[train_number] = CargoTrain.new(train_number)
+			else
+				puts "Неправильно введен номер"
+			end
+		rescue StandardError => e 
+			puts "#{e.message}"
 		end
 		puts @trains
 	end
@@ -72,15 +80,19 @@ class Interface
 		if train
 			puts "Какой тип вагона?  1 - Пассажирский 2 - Грузовой"
 			wagon_var = gets.chomp.to_i
-			if wagon_var == 1
-				train.add_wagon(PassangerWagon.new(1))
-				puts train.wagons
+			begin
+				if wagon_var == 1
+					train.add_wagon(PassangerWagon.new(1))
+					puts train.wagons
 
-			elsif wagon_var == 2
-				train.add_wagon(CargoWagon.new(1))
-				puts train.wagons
-			else
-				puts "Неправильно введен тип вагона"
+				elsif wagon_var == 2
+					train.add_wagon(CargoWagon.new(1))
+					puts train.wagons
+				else
+					puts "Неправильно введен тип вагона"
+				end
+			rescue StandardError => e 
+				puts "#{e.message}"
 			end
 		end
 	end

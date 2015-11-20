@@ -1,8 +1,9 @@
 require_relative 'manufacturer'
 class Train
   include Manufacturer
-  attr_accessor :speed, :number
-  
+  attr_accessor :speed, :number, :wagons
+
+  NUMBER_FORMAT = /^([a-z]|\d){3}-?([a-z]|\d){2}$/i
   @@trains = Hash.new
 
 
@@ -11,7 +12,9 @@ class Train
     @wagons = Hash.new
     @speed = 0
     @cur_index_station = 0
+    validate!
     @@trains[number] = self
+
 
   end
 
@@ -54,7 +57,7 @@ class Train
 
   def next_station
     if @routes.size == 0
-      puts "Не задан маршрут"
+      raise "Не задан маршрут"
     else
       increase_index_station
       @next_station = @routes[cur_index_station]
@@ -64,7 +67,7 @@ class Train
 
   def show_station
     if @routes.size == 0
-      puts "Не задан маршрут"
+      raise "Не задан маршрут"
     else
       puts "Текущая станция #{@routes[@cur_index_station].name}"
     end    
@@ -80,7 +83,7 @@ class Train
         @wagons[wagon.number] = wagon
         puts "Вагон добавлен"
       else
-        puts "Невозможно добавить вагон, так как поезд движется"
+        raise "Невозможно добавить вагон, так как поезд движется"
       end         
     else
       puts "Невозможно добавить вагон"
@@ -95,14 +98,28 @@ class Train
       @wagons.delete(wagon.number)
       puts "Вагон удален"
      else
-      puts "Невозможно добавить вагон, так как поезд движется"
+      raise "Невозможно удалить вагон, так как поезд движется"
      end
     else
      puts "Невозможно удалить вагон"
     end  
   end
 
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
   private
+
+  def validate!
+    raise "Номер не может быть пустым" if number.nil?
+    raise "Номер не может быть меньше 3 символов" if number.length < 3
+    raise "Неверный формат номер поезда" if number !~ NUMBER_FORMAT
+    raise "Неуникальный номер поезда!" if !Train.find(number).nil?
+    true
+  end
 
   def route
     @route

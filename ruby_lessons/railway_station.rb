@@ -3,14 +3,25 @@ class RailwayStation
    @@all = []  
 
   def initialize(station_number,name)
-    @station_number = station_number
-    @name = name
-    @trains = []
-    @@all << self
+    begin
+      @station_number = station_number
+      @name = name
+      @trains = []
+      validate!
+      @@all << self
+    rescue RuntimeError => e 
+      puts "#{e.message}"
+    end
   end
 
   def self.all
       @@all
+  end
+
+  def valid?
+    validate!
+  rescue
+    false
   end
 
   def take_train(train)
@@ -30,6 +41,13 @@ class RailwayStation
   end
 
   private
+
+  def validate!
+    raise "Номер не может быть пустым" if station_number.nil?
+    raise "Номер не может быть меньше 3 символов" if station_number.length < 3
+    raise "Имя не может быть меньше 3 символов" if name.length < 3
+    true
+  end
 
   def trains
     @trains

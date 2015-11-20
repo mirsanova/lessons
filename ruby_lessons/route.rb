@@ -23,8 +23,9 @@ class Route
   end
 
   def add_station(station)
-    @stations <<  station
-    puts "Добавлена станция #{station.name}"  
+        @stations <<  station
+      puts "Добавлена станция #{station.name}"
+      
   end
 
   def delete_station(station)
