@@ -18,6 +18,13 @@ class Train
 
   end
 
+  def each_wagon(&block)
+    wagons.each do |number, wagon|
+      block.call(wagon)
+    end
+    
+  end
+
   def self.find(number)
     puts "Find"
     @@trains[number]

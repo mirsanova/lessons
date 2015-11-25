@@ -11,6 +11,13 @@ class RailwayStation
     
   end
 
+  def each_train(&block)
+    trains.each do |train|
+      block.call(train)
+    end
+  end
+
+
   def self.all
       @@all
   end
